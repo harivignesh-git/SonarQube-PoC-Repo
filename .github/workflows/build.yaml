@@ -21,7 +21,7 @@ jobs:
           # Define file patterns and their respective comment regex
           declare -A patterns
           patterns["js"]='//|/\*'
-          patterns["py"]='#|"""|\'\'\''
+          patterns["py"]='#|"""|'\'''\'''
           patterns["java"]='//|/\*'
           patterns["html"]='<!--'
           patterns["rb"]='#'
