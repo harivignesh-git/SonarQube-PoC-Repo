@@ -56,3 +56,5 @@ jobs:
           else
             echo "✅ All files contain comments."
           fi
+      - name: Test secrets
+        run: echo "TrimbleCloudxOps.xOpsStandards=${{ secrets.SONAR_ProjectName }}"
