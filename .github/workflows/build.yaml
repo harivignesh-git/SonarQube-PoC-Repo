@@ -15,6 +15,9 @@ jobs:
 
       - name: Debug - List all files
         run: find . -type f
+        
+      - name: Test secrets
+        run: echo "TrimbleCloudxOps.xOpsStandards=${{ secrets.SONAR_ProjectName }}"
       
       - name: Find files without comments
         run: |
@@ -56,5 +59,4 @@ jobs:
           else
             echo "✅ All files contain comments."
           fi
-      - name: Test secrets
-        run: echo "TrimbleCloudxOps.xOpsStandards=${{ secrets.SONAR_ProjectName }}"
+      
