@@ -1,0 +1,39 @@
+---
+jobs:
+  sonarQubeScan:
+    name: 'Run SonarQube Scan'
+    runs-on: 'ubuntu-latest'  # Runs on Ubuntu OS
+
+    steps:
+      - name: 'Checkout Code'
+        uses: 'actions/checkout@v4'  # Checkout the repository
+        with:
+          fetch-depth: 0
+      - env:
+          SONAR_HOST_URL: '${{ secrets.SONAR_HOST_URL }}'
+          SONAR_TOKEN: '${{ secrets.SONAR_TOKEN }}'
+        name: 'Run SonarQube Scan'
+        # Uses the SonarQube Scan action
+        uses: 'sonarsource/sonarqube-scan-action@master'
+        with:
+          args: >  # Arguments for the SonarQube Scan
+            -Dsonar.projectKey=-Dsonar.projectKey=TrimbleCloudXops.xOpsStandards:${{secrets.REPO_NAME}}
+            -Dsonar.sources=.,.github/workflows/production.yaml,.github/workflows/sandbox.yaml,.github/workflows/sonarscan.yaml
+
+name: 'Code Quality Scan'
+# "on":
+#   pull_request:  # Runs only once on each PR
+#     types: ['opened', 'synchronize', 'reopened']
+#   workflow_run:
+#     branches:
+#       - 'main'  # Restricts to main branch to avoid triggering twice in a PR
+#     types:
+#       - 'completed'
+#     # Runs after production deployment completes
+#     workflows: ['Production deployment']
+'on':
+  workflow_dispatch: {}
+# Permissions to read the contents of the repository
+permissions:
+  contents: 'read'
+...
