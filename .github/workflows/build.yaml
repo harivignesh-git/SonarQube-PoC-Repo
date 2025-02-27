@@ -20,21 +20,21 @@ jobs:
         run: |
           # Define file patterns and their respective comment regex
           declare -A patterns
-          patterns["js"]='^\s*//|/\*'
-          patterns["py"]='^\s*#|"""|\'\'\''
-          patterns["java"]='^\s*//|/\*'
-          patterns["html"]='^\s*<!--'
-          patterns["rb"]='^\s*#'
-          patterns["php"]='^\s*//|/\*'
-          patterns["css"]='^\s*/\*'
-          patterns["cs"]='^\s*//|/\*'
-          patterns["sh"]='^\s*#'
-          patterns["dockerfile"]='^\s*#'
-          patterns["yaml"]='^\s*#'
-          patterns["go"]='^\s*//|/\*'
-          patterns["ps1"]='^\s*#'
-          patterns["tf"]='^\s*#|/\*'
-          patterns["bicep"]='^\s*/\*'
+          patterns["js"]='//|/\*'
+          patterns["py"]='#|"""|\'\'\''
+          patterns["java"]='//|/\*'
+          patterns["html"]='<!--'
+          patterns["rb"]='#'
+          patterns["php"]='//|/\*'
+          patterns["css"]='/\*'
+          patterns["cs"]='//|/\*'
+          patterns["sh"]='#'
+          patterns["dockerfile"]='#'
+          patterns["yaml"]='#'
+          patterns["go"]='//|/\*'
+          patterns["ps1"]='#'
+          patterns["tf"]='#|/\*'
+          patterns["bicep"]='/\*'
           
           failed=0
           
