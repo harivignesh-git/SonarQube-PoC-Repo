@@ -17,7 +17,7 @@ jobs:
         run: find . -type f
         
       - name: Test secrets
-        run: echo "TrimbleCloudxOps.xOpsStandards=${{ env.SONAR_ProjectName }}"
+        run: echo "TrimbleCloudxOps.xOpsStandards=${{ env.SONAR_PROJECTNAME }}"
       
       - name: Find files without comments
         run: |
