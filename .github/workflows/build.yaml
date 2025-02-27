@@ -13,6 +13,9 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y grep
 
+      - name: Debug - List all files
+        run: find . -type f
+      
       - name: Find files without comments
         run: |
           # Define file patterns and their respective comment regex
@@ -37,9 +40,12 @@ jobs:
           
           for ext in "${!patterns[@]}"; do
             for file in $(find . -type f -name "*.$ext"); do
-              if ! grep -qE "${patterns[$ext]}" "$file"; then
+              echo "Checking: $file"
+              if ! grep -qE "${patterns[$ext]}" "$file" || [ ! -s "$file" ]; then
                 echo "❌ No comments found in: $file"
                 failed=1
+              else
+                echo "✅ Comments found in: $file"
               fi
             done
           done
