@@ -41,7 +41,7 @@ jobs:
           for ext in "${!patterns[@]}"; do
             for file in $(find . -type f -name "*.$ext"); do
               echo "Checking: $file"
-              if ! grep -qE "${patterns[$ext]}" "$file" || [ ! -s "$file" ]; then
+              if ! grep -qE "${patterns[$ext]}" "$file"; then
                 echo "❌ No comments found in: $file"
                 failed=1
               else
