@@ -1,3 +1,3 @@
-Repository Name,Description
-repo3,desc3
-repo4,desc4
+Repository Name,Description,Template,Visibility,Required Status Checks,Permission,GitHub Template,Custom Property
+"devsecops","Repository to store TSDLC | DevSecOps scripts.","null","internal","check-branch-name","maintain","false","repo_type:production"
+"trimble-cloud-appops-live-pagerduty-config","Repository containing PD config for Trimble Cloud AppOps team","template-live-pagerduty-config","internal","Run SonarQube Scan","maintain","false","repo_type:production"
