@@ -1,0 +1,55 @@
+---
+jobs:
+  validate-csv:
+    name: 'Validate Repository Name'
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - name: 'Checkout repository'
+        uses: 'actions/checkout@v4'
+
+      - name: 'Install Python'
+        uses: 'actions/setup-python@v4'
+        with:
+          python-version: '3.x'
+
+      - name: 'Validate repository names in last non-empty line of each CSV'
+        run: |
+          import csv
+          import os
+          import sys
+          import re
+          from collections import Counter
+          folder_path = "team-repositories"
+          pattern = re.compile(r'^[a-z0-9\-]+$')
+          for file in os.listdir(folder_path):
+              if file.endswith(".csv"):
+                  file_path = os.path.join(folder_path, file)
+                  with open(file_path, newline='') as csvfile:
+                      reader = csv.DictReader(csvfile)
+                      rows = [row for row in reader if any(row.values())]
+                      if rows:
+                          last_row = rows[-1]
+                          repo_name = last_row.get("Repository Name", "").strip()
+                          if not pattern.fullmatch(repo_name):
+                              print(f"❌ Invalid repository name in {file}: '{repo_name}'")
+                              sys.exit(1)
+                          repo_names = [row["Repository Name"].strip() for row in rows if "Repository Name" in row]
+                          repo_counts = Counter(repo_names)
+                          if repo_counts[repo_name] > 1:
+                              print(f"❌ Duplicate repository name '{repo_name}' found in {file}")
+                              sys.exit(1)
+          print("✅ All repository names are valid and unique within each file.")
+        shell: 'python'
+
+name: 'Validate Repository Names in CSV'
+
+'on':
+  pull_request:  # Runs only once on each PR
+    types: ['opened', 'synchronize', 'reopened']
+  push:
+    branches:
+      - "main"
+ 
+
+
