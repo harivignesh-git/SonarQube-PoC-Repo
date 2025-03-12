@@ -1,62 +1,16 @@
-name: Check Comments in Files
+name: 'Use Reusable SonarQube Workflow'
 
-on: [push, pull_request]
+on:
+  pull_request:
+    types: ['opened', 'synchronize', 'reopened']
 
 jobs:
-  check-comments:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update && sudo apt-get install -y grep
-
-      - name: Debug - List all files
-        run: find . -type f
-        
-      - name: Test secrets
-        run: echo "TrimbleCloudxOps.xOpsStandards=${{ vars.SONAR_PROJECTNAME }}"
-      
-      - name: Find files without comments
-        run: |
-          # Define file patterns and their respective comment regex
-          declare -A patterns
-          patterns["js"]='//|/\*'
-          patterns["py"]='#|"""|'\'''\'''
-          patterns["java"]='//|/\*'
-          patterns["html"]='<!--'
-          patterns["rb"]='#'
-          patterns["php"]='//|/\*'
-          patterns["css"]='/\*'
-          patterns["cs"]='//|/\*'
-          patterns["sh"]='#'
-          patterns["dockerfile"]='#'
-          patterns["yaml"]='#'
-          patterns["go"]='//|/\*'
-          patterns["ps1"]='#'
-          patterns["tf"]='#|/\*'
-          patterns["bicep"]='/\*'
-          
-          failed=0
-          
-          for ext in "${!patterns[@]}"; do
-            for file in $(find . -type f -name "*.$ext"); do
-              echo "Checking: $file"
-              if ! grep -qE "${patterns[$ext]}" "$file"; then
-                echo "❌ No comments found in: $file"
-                failed=1
-              else
-                echo "✅ Comments found in: $file"
-              fi
-            done
-          done
-          
-          if [[ "$failed" -eq 1 ]]; then
-            echo "❌ Some files are missing comments. Please add comments."
-            exit 1
-          else
-            echo "✅ All files contain comments."
-          fi
-      
+  sonarQubeScan:
+    uses: harivignesh-git/test-reuse-workflow/.github/workflows/reference.yaml@main
+    with:
+      projectKey: 'TrimbleCloudXops.xOpsStandards:github-repository-management'
+      projectName: 'github-repository-management'
+      sources: '.,.github/workflows/terraform.yaml,.github/workflows/sonarscan.yaml,.github/workflows/validate_repo_name.yaml'
+    secrets:
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
